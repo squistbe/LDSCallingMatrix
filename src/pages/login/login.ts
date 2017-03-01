@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { LoadingController, NavController, NavParams } from 'ionic-angular';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 import { AuthService } from '../../providers/auth-service';
 import { DashboardPage } from '../dashboard/dashboard';
@@ -10,11 +11,17 @@ import { RegisterPage } from '../register/register';
   templateUrl: 'login.html'
 })
 export class Login {
+  private login: FormGroup;
   loading: any;
   email: string;
   password: string;
 
-  constructor( public authService: AuthService, public loadingCtrl: LoadingController, public navCtrl: NavController, public params: NavParams ) {}
+  constructor( public authService: AuthService, public loadingCtrl: LoadingController, public navCtrl: NavController, public params: NavParams, private formBuilder: FormBuilder ) {
+    this.login = this.formBuilder.group({
+      email: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+  }
 
   ionViewDidLoad() {
     this.showLoader('Loading...');
@@ -38,12 +45,7 @@ export class Login {
   doLogin() {
     this.showLoader('Logging in...');
 
-    let credentials = {
-      email: this.email,
-      password: this.password
-    };
-
-    this.authService.login(credentials).then((result) => {
+    this.authService.login(this.login.value).then((result) => {
         this.loading.dismiss();
         this.navCtrl.setRoot(DashboardPage);
     }, (err) => {

@@ -4,18 +4,19 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content [hidden]="isLoading" padding>
-  <ion-item>
-      <ion-input type="text" placeholder="Username" [(ngModel)]="email"></ion-input>
+<ion-content padding>
+  <form [formGroup]="login" (ngSubmit)="doLogin()">
+    <ion-item>
+      <ion-input type="text" placeholder="Email" formControlName="email"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input type="password" placeholder="Password" [(ngModel)]="password"></ion-input>
+      <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
     </ion-item>
 
     <div padding>
-      <button type="submit" ion-button round block (click)="doLogin()">Log In</button>
-      <button ion-button clear block (click)="launchRegister()">Create an Account</button>
+      <button type="submit" ion-button round block [disabled]="!login.valid">Log In</button>
     </div>
-
+  </form>
+  <button ion-button clear block (click)="launchRegister()">Create an Account</button>
 </ion-content>
