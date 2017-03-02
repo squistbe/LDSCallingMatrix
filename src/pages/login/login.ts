@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
-import { LoadingController, NavController, NavParams } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { LoadingController, NavController, NavParams } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 import { AuthService } from '../../providers/auth-service';
+import { UserService } from '../../providers/user-service';
+
 import { DashboardPage } from '../dashboard/dashboard';
 import { RegisterPage } from '../register/register';
+import { WelcomePage } from '../welcome/welcome';
 
 @Component({
   selector: 'page-login',
@@ -16,7 +20,15 @@ export class Login {
   email: string;
   password: string;
 
-  constructor( public authService: AuthService, public loadingCtrl: LoadingController, public navCtrl: NavController, public params: NavParams, private formBuilder: FormBuilder ) {
+  constructor(
+    public authService: AuthService,
+    public userService: UserService,
+    public loadingCtrl: LoadingController,
+    public navCtrl: NavController,
+    public params: NavParams,
+    public storage: Storage,
+    private formBuilder: FormBuilder
+  ) {
     this.login = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required]
@@ -26,16 +38,13 @@ export class Login {
   ionViewDidLoad() {
     this.showLoader('Loading...');
 
-    // No need check authenticity
+    // No need to check authenticity
     if(!this.params.get('forceLogout')) {
       // Check if already authenticated
       this.authService.checkAuthentication().then((res) => {
-          console.log("Already authorized");
-          this.loading.dismiss();
-          this.navCtrl.setRoot(DashboardPage);
+        this.launchDashboard();
       }, (err) => {
-          console.log("Not already authorized");
-          this.loading.dismiss();
+        this.loading.dismiss();
       });
     } else {
       this.loading.dismissAll();
@@ -46,12 +55,16 @@ export class Login {
     this.showLoader('Logging in...');
 
     this.authService.login(this.login.value).then((result) => {
-        this.loading.dismiss();
-        this.navCtrl.setRoot(DashboardPage);
+      this.launchDashboard();
     }, (err) => {
-        this.loading.dismiss();
-        console.log(err);
+      this.loading.dismiss();
     });
+  }
+
+  launchDashboard() {
+    this.loading.dismiss();
+    this.navCtrl.setRoot(DashboardPage);
+    if(!this.userService.currentUser.user.orgId) this.navCtrl.push(WelcomePage);
   }
 
   launchRegister(){

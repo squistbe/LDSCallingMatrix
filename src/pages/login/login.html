@@ -6,17 +6,17 @@
 
 <ion-content padding>
   <form [formGroup]="login" (ngSubmit)="doLogin()">
-    <ion-item>
+    <ion-item no-padding>
       <ion-input type="text" placeholder="Email" formControlName="email"></ion-input>
     </ion-item>
 
-    <ion-item>
+    <ion-item no-padding>
       <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
     </ion-item>
 
-    <div padding>
-      <button type="submit" ion-button round block [disabled]="!login.valid">Log In</button>
-      <button type="button" ion-button round block outline (click)="launchRegister()">Create an Account</button>
+    <div padding-vertical>
+      <button type="submit" ion-button block [disabled]="!login.valid">Log In</button>
+      <button type="button" ion-button block outline (click)="launchRegister()">Create an Account</button>
     </div>
   </form>
 </ion-content>

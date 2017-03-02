@@ -3,20 +3,22 @@ import { Http, Headers } from '@angular/http';
 import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/map';
 
+import { UserService } from './user-service';
+
 @Injectable()
 export class AuthService {
-  public token: any;
+  userInfo: any;
 
-  constructor(public http: Http, public storage: Storage) { }
+  constructor(public http: Http, public storage: Storage, public userService: UserService) { }
 
   checkAuthentication() {
     return new Promise((resolve, reject) => {
       //Load token if exists
-      this.storage.get('token').then((value) => {
-        this.token = value;
+      this.userService.getUserInfo().then((value) => {
+        this.userInfo = value;
 
         let headers = new Headers();
-        headers.append('Authorization', this.token);
+        headers.append('Authorization', this.userInfo.token);
 
         this.http.get('/api/auth/protected', {headers: headers})
           .subscribe(res => {
@@ -36,8 +38,7 @@ export class AuthService {
       this.http.post('/api/auth/register', JSON.stringify(details), {headers: headers})
         .subscribe(res => {
           let data = res.json();
-          this.token = data.token;
-          this.storage.set('token', data.token);
+          this.userService.setUserInfo(data);
           resolve(data);
         }, (err) => {
           reject(err);
@@ -53,8 +54,7 @@ export class AuthService {
       this.http.post('/api/auth/login', JSON.stringify(credentials), {headers: headers})
         .subscribe(res => {
           let data = res.json();
-          this.token = data.token;
-          this.storage.set('token', data.token);
+          this.userService.setUserInfo(data);
           resolve(data);
           resolve(res.json());
         }, (err) => {
@@ -64,6 +64,6 @@ export class AuthService {
   }
 
   logout(){
-    this.storage.set('token', '');
+    this.userService.setUserInfo('');
   }
 }
