@@ -15,17 +15,17 @@ export class RegisterPage {
 
   constructor(private formBuilder: FormBuilder, public navCtrl: NavController, public authService: AuthService, public loadingCtrl: LoadingController) {
     this.register = this.formBuilder.group({
-      name: ['', Validators.required],
-      email: ['', Validators.required],
+      name: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
+      email: ['', Validators.compose([Validators.pattern(/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/), Validators.required])],
       password: ['', Validators.required],
-      password2: ['', Validators.required]
+      confirmPassword: ['', Validators.required]
     });
     this.loading = this.loadingCtrl.create({
       content: 'Creating account...'
     });
   }
 
-  registerForm(){
+  registerForm() {
     this.loading.present();
 
     this.authService.createAccount(this.register.value).then((result) => {
@@ -35,5 +35,9 @@ export class RegisterPage {
         this.loading.dismiss();
         console.log(err);
     });
+  }
+
+  cancelRegistration() {
+    this.navCtrl.pop();
   }
 }

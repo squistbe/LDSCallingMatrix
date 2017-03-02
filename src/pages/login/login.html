@@ -16,7 +16,7 @@
 
     <div padding>
       <button type="submit" ion-button round block [disabled]="!login.valid">Log In</button>
+      <button type="button" ion-button round block outline (click)="launchRegister()">Create an Account</button>
     </div>
   </form>
-  <button ion-button clear block (click)="launchRegister()">Create an Account</button>
 </ion-content>

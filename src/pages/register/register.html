@@ -13,17 +13,24 @@
     <ion-item>
       <ion-input type="text" placeholder="Email" formControlName="email"></ion-input>
     </ion-item>
+    <ion-item no-lines color="errorText" *ngIf="!register.controls.email.valid  && register.controls.email.dirty">
+        <p>Please enter a valid email.</p>
+    </ion-item>
 
     <ion-item>
       <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input type="password" placeholder="Confirm Password" formControlName="password2"></ion-input>
+      <ion-input type="password" placeholder="Confirm Password" formControlName="confirmPassword"></ion-input>
+    </ion-item>
+    <ion-item no-lines color="errorText" *ngIf="register.controls.password.value !== register.controls.confirmPassword.value  && (register.controls.password.dirty && register.controls.confirmPassword.dirty)">
+        <p>Password does not match.</p>
     </ion-item>
 
     <div padding>
       <button type="submit" ion-button round block [disabled]="!register.valid">Create Account</button>
+      <button type="button" ion-button round block outline (click)="cancelRegistration()">Cancel</button>
     </div>
 
   </form>
