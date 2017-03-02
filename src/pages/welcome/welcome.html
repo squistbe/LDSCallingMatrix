@@ -1,0 +1,13 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Getting Started </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding text-center>
+  <h2>Welcome!</h2>
+  <p>It looks like you don't have a Ward or Branch associated to your account. Would you like create or join one?</p>
+  <button ion-button (click)="createOrg()">create</button>
+  <button ion-button (click)="joinOrg()">join</button>
+  <button ion-button outline (click)="cancel()">cancel</button>
+</ion-content>
