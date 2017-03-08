@@ -9,13 +9,14 @@ import { Storage } from '@ionic/storage';
 // Providers
 import { AuthService } from '../providers/auth-service';
 import { UserService } from '../providers/user-service';
+import { OrgService } from '../providers/org-service';
 
 // Pages
 import { MyApp } from './app.component';
 import { DashboardPage } from '../pages/dashboard/dashboard';
 import { Login } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
-import { WelcomePage, JoinOrgModal, CreateOrgModal } from '../pages/welcome/welcome';
+import { WelcomePage, JoinOrgPage, CreateOrgPage } from '../pages/welcome/welcome';
 
 @NgModule({
   declarations: [
@@ -24,8 +25,8 @@ import { WelcomePage, JoinOrgModal, CreateOrgModal } from '../pages/welcome/welc
     Login,
     RegisterPage,
     WelcomePage,
-    JoinOrgModal,
-    CreateOrgModal
+    JoinOrgPage,
+    CreateOrgPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -38,17 +39,18 @@ import { WelcomePage, JoinOrgModal, CreateOrgModal } from '../pages/welcome/welc
     Login,
     RegisterPage,
     WelcomePage,
-    JoinOrgModal,
-    CreateOrgModal
+    JoinOrgPage,
+    CreateOrgPage
   ],
   providers: [
     {
       provide: ErrorHandler,
       useClass: IonicErrorHandler
     },
-    AuthService,
     Storage,
-    UserService
+    AuthService,
+    UserService,
+    OrgService
   ]
 })
 

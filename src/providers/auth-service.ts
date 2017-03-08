@@ -11,6 +11,27 @@ export class AuthService {
 
   constructor(public http: Http, public storage: Storage, public userService: UserService) { }
 
+  createAuthorizationHeader(headers: Headers) {
+    headers.append('Authorization', this.userInfo.token);
+  }
+
+  get(url) {
+    let headers = new Headers();
+    this.createAuthorizationHeader(headers);
+    return this.http.get(url, {
+      headers: headers
+    });
+  }
+
+  post(url, data) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    this.createAuthorizationHeader(headers);
+    return this.http.post(url, data, {
+      headers: headers
+    });
+  }
+
   checkAuthentication() {
     return new Promise((resolve, reject) => {
       //Load token if exists
@@ -18,7 +39,7 @@ export class AuthService {
         this.userInfo = value;
 
         let headers = new Headers();
-        headers.append('Authorization', this.userInfo.token);
+        this.createAuthorizationHeader(headers);
 
         this.http.get('/api/auth/protected', {headers: headers})
           .subscribe(res => {

@@ -3,7 +3,9 @@ import { NavController, LoadingController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 import { AuthService } from '../../providers/auth-service';
+import { UserService } from '../../providers/user-service';
 import { DashboardPage } from '../dashboard/dashboard';
+import { WelcomePage } from '../welcome/welcome';
 
 @Component({
   selector: 'page-register',
@@ -13,7 +15,13 @@ export class RegisterPage {
   private register : FormGroup
   private loading : any;
 
-  constructor(private formBuilder: FormBuilder, public navCtrl: NavController, public authService: AuthService, public loadingCtrl: LoadingController) {
+  constructor(
+    private formBuilder: FormBuilder,
+    public navCtrl: NavController,
+    public authService: AuthService,
+    public loadingCtrl: LoadingController,
+    public userService: UserService
+  ) {
     this.register = this.formBuilder.group({
       name: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
       email: ['', Validators.compose([Validators.pattern(/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/), Validators.required])],
@@ -31,6 +39,7 @@ export class RegisterPage {
     this.authService.createAccount(this.register.value).then((result) => {
       this.loading.dismiss();
       this.navCtrl.setRoot(DashboardPage);
+      if(!this.userService.currentUser.user.orgId) this.navCtrl.push(WelcomePage);
     }, (err) => {
         this.loading.dismiss();
         console.log(err);

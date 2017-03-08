@@ -7,6 +7,7 @@ import 'rxjs/add/operator/map';
 import { Login } from '../pages/login/login';
 import { DashboardPage } from '../pages/dashboard/dashboard';
 import { AuthService } from '../providers/auth-service';
+import { UserService } from '../providers/user-service';
 
 
 @Component({
@@ -15,15 +16,15 @@ import { AuthService } from '../providers/auth-service';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
   rootPage: any = Login;
-
   pages: Array<{title: string, component: any}>;
+  user: any;
 
-  constructor(public platform: Platform, public auth: AuthService) {
+  constructor(public platform: Platform, public auth: AuthService, public userService: UserService) {
     this.initializeApp();
     this.pages = [
       { title: 'Dashboard', component: DashboardPage }
     ];
-
+    this.user = this.userService.currentUser ? this.userService.currentUser.user : '';
   }
 
   initializeApp() {

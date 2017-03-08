@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { LoadingController, NavController, NavParams } from 'ionic-angular';
+import { LoadingController, NavController, NavParams, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 import { AuthService } from '../../providers/auth-service';
@@ -25,6 +25,7 @@ export class Login {
     public userService: UserService,
     public loadingCtrl: LoadingController,
     public navCtrl: NavController,
+    public alertCtrl: AlertController,
     public params: NavParams,
     public storage: Storage,
     private formBuilder: FormBuilder
@@ -58,6 +59,11 @@ export class Login {
       this.launchDashboard();
     }, (err) => {
       this.loading.dismiss();
+      this.alertCtrl.create({
+        title: 'Oops...',
+        subTitle: 'Invalid username or password.',
+        buttons: ['OK']
+      }).present();
     });
   }
 

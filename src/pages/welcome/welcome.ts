@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, ViewController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, ViewController, LoadingController, AlertController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+
+import { OrgService, Org } from '../../providers/org-service';
+import { UserService, UserInfo } from '../../providers/user-service';
+
+import { DashboardPage } from '../dashboard/dashboard';
 
 @Component({
   selector: 'page-welcome',
@@ -13,13 +18,11 @@ export class WelcomePage {
   ionViewDidLoad() {}
 
   createOrg() {
-    let createModal = this.modalCtrl.create(CreateOrgModal);
-    createModal.present();
+    this.navCtrl.push(CreateOrgPage)
   }
 
   joinOrg() {
-    let joinModal = this.modalCtrl.create(JoinOrgModal);
-    joinModal.present();
+    this.navCtrl.push(JoinOrgPage)
   }
 
   cancel() {
@@ -31,12 +34,6 @@ export class WelcomePage {
   template:
   `<ion-header>
     <ion-navbar>
-    <ion-buttons start>
-      <button ion-button (click)="dismiss()">
-        <span ion-text color="primary" showWhen="ios">Cancel</span>
-        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
-      </button>
-    </ion-buttons>
       <ion-title>Join a Ward/Branch</ion-title>
     </ion-navbar>
   </ion-header>
@@ -52,10 +49,10 @@ export class WelcomePage {
     </form>
   </ion-content>`
 })
-export class JoinOrgModal {
+export class JoinOrgPage {
   private joinOrgForm: FormGroup;
 
-  constructor(public viewCtrl: ViewController, private formBuilder: FormBuilder) {
+  constructor(public viewCtrl: ViewController, private formBuilder: FormBuilder, public navCtrl: NavController) {
     this.joinOrgForm = this.formBuilder.group({
       name: ['']
     });
@@ -66,7 +63,7 @@ export class JoinOrgModal {
   }
 
   dismiss() {
-    this.viewCtrl.dismiss();
+    this.navCtrl.pop();
   }
 }
 
@@ -74,12 +71,6 @@ export class JoinOrgModal {
   template:
   `<ion-header>
     <ion-navbar>
-    <ion-buttons start>
-      <button ion-button (click)="dismiss()">
-        <span ion-text color="primary" showWhen="ios">Cancel</span>
-        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
-      </button>
-    </ion-buttons>
       <ion-title>Create a Ward/Branch</ion-title>
     </ion-navbar>
   </ion-header>
@@ -89,7 +80,7 @@ export class JoinOrgModal {
         <ion-input type="text" placeholder="Name" formControlName="name"></ion-input>
       </ion-item>
       <ion-item no-padding>
-        <ion-input type="text" placeholder="Unit Number" formControlName="unitNumber"></ion-input>
+        <ion-input type="number" placeholder="Unit Number" formControlName="unitNumber"></ion-input>
       </ion-item>
       <div padding-vertical>
         <button type="submit" ion-button block [disabled]="!createOrgForm.valid">Create</button>
@@ -98,21 +89,54 @@ export class JoinOrgModal {
     </form>
   </ion-content>`
 })
-export class CreateOrgModal {
+export class CreateOrgPage {
   private createOrgForm: FormGroup;
+  private loading: any;
+  private currentUser: UserInfo
 
-  constructor(public viewCtrl: ViewController, private formBuilder: FormBuilder) {
+  constructor(
+    private loadingCtrl: LoadingController,
+    public navCtrl: NavController,
+    public viewCtrl: ViewController,
+    public alertCtrl: AlertController,
+    private formBuilder: FormBuilder,
+    public orgService: OrgService,
+    public userService: UserService
+  ) {
     this.createOrgForm = this.formBuilder.group({
-      name: [''],
-      unitNumber: ['']
+      name: ['', Validators.required],
+      unitNumber: ['', Validators.required]
     });
+
+    this.loading = this.loadingCtrl.create({
+      content: 'Creating...'
+    });
+
+    this.currentUser = this.userService.currentUser;
   }
 
   createOrg() {
+    this.loading.present();
 
+    let details = this.createOrgForm.value;
+    details.ownerId = this.userService.currentUser.user._id;
+
+    this.orgService.createOrg(details).then((result: Org) => {
+      this.currentUser.user.orgId = result._id;
+      this.userService.setUserInfo(this.currentUser);
+      this.loading.dismiss();
+      this.navCtrl.setRoot(DashboardPage);
+    }, (err) => {
+      this.loading.dismiss();
+      this.alertCtrl.create({
+        title: 'Oops...',
+        subTitle: 'Ward already exists. You must have permission to join.',
+        buttons: ['OK']
+      }).present();
+    });
   }
 
   dismiss() {
-    this.viewCtrl.dismiss();
+    this.navCtrl.pop();
   }
 }

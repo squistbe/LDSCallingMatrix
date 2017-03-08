@@ -10,10 +10,10 @@ interface User {
   name: string,
   email: string,
   role: string,
-  orgId?: Number
+  orgId?: string
 }
 
-interface UserInfo {
+export interface UserInfo {
   token?: string,
   user?: User
 }
@@ -30,13 +30,14 @@ export class UserService {
         this.currentUser = res;
 
         if(this.currentUser) resolve(this.currentUser);
-        else reject(res);
+        else resolve({error: 'No user found'});
       });
     });
   }
 
-  setUserInfo(user) {
-    this.storage.set(USER_INFO, user);
+  setUserInfo(user: UserInfo) {
+    this.currentUser = user; // in memory and
+    this.storage.set(USER_INFO, user); // local storage
   }
 
   getUserById(userId) {
