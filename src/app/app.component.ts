@@ -6,6 +6,8 @@ import 'rxjs/add/operator/map';
 
 import { Login } from '../pages/login/login';
 import { DashboardPage } from '../pages/dashboard/dashboard';
+import { MembersPage } from '../pages/members/members';
+
 import { AuthService } from '../providers/auth-service';
 import { UserService } from '../providers/user-service';
 
@@ -22,7 +24,8 @@ export class MyApp {
   constructor(public platform: Platform, public auth: AuthService, public userService: UserService) {
     this.initializeApp();
     this.pages = [
-      { title: 'Dashboard', component: DashboardPage }
+      { title: 'Dashboard', component: DashboardPage },
+      { title: 'Members', component: MembersPage }
     ];
     this.user = this.userService.currentUser ? this.userService.currentUser.user : '';
   }

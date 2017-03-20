@@ -9,6 +9,8 @@ import { Storage } from '@ionic/storage';
 // Providers
 import { AuthService } from '../providers/auth-service';
 import { UserService } from '../providers/user-service';
+import { UnitService } from '../providers/unit-service';
+import { UploadService } from '../providers/upload-service';
 import { OrgService } from '../providers/org-service';
 
 // Pages
@@ -16,7 +18,8 @@ import { MyApp } from './app.component';
 import { DashboardPage } from '../pages/dashboard/dashboard';
 import { Login } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
-import { WelcomePage, JoinOrgPage, CreateOrgPage } from '../pages/welcome/welcome';
+import { WelcomePage, JoinUnitPage, CreateUnitPage } from '../pages/welcome/welcome';
+import { MembersPage } from '../pages/members/members';
 
 @NgModule({
   declarations: [
@@ -25,8 +28,9 @@ import { WelcomePage, JoinOrgPage, CreateOrgPage } from '../pages/welcome/welcom
     Login,
     RegisterPage,
     WelcomePage,
-    JoinOrgPage,
-    CreateOrgPage
+    JoinUnitPage,
+    CreateUnitPage,
+    MembersPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -39,8 +43,9 @@ import { WelcomePage, JoinOrgPage, CreateOrgPage } from '../pages/welcome/welcom
     Login,
     RegisterPage,
     WelcomePage,
-    JoinOrgPage,
-    CreateOrgPage
+    JoinUnitPage,
+    CreateUnitPage,
+    MembersPage
   ],
   providers: [
     {
@@ -50,6 +55,8 @@ import { WelcomePage, JoinOrgPage, CreateOrgPage } from '../pages/welcome/welcom
     Storage,
     AuthService,
     UserService,
+    UnitService,
+    UploadService,
     OrgService
   ]
 })

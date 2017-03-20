@@ -1,24 +1,30 @@
 import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 import { AuthService } from './auth-service';
 
-export interface Org {
-  _id: string,
+const ORG_API = '/api/org/';
+
+interface Calling {
   name: string,
-  unitNumber: string,
-  ownerId?: string
+  callingId: string
+}
+
+export interface Org {
+  name: string,
+  _id: string,
+  callings: Array<Calling>
 }
 
 @Injectable()
 export class OrgService {
-  currentOrg: Org;
 
   constructor(public authService: AuthService) {}
 
-  createOrg(details) {
+  getOrgs() {
     return new Promise((resolve, reject) => {
-      this.authService.post('/api/org', JSON.stringify(details))
+      this.authService.get(ORG_API)
         .subscribe(res => {
           let data = res.json();
           resolve(data);

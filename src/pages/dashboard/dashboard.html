@@ -7,4 +7,16 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>Dashboard</ion-content>
+<ion-content>
+  <ion-list *ngFor="let org of orgs">
+    <ion-list-header>
+      {{org.name}}
+    </ion-list-header>
+    <ion-item-sliding *ngFor="let calling of org.callings | order-by: 'sortIndex'">
+      <ion-item>
+        {{calling.name}}
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
+  <!-- <input type="file" (change)="uploadChange($event)"> -->
+</ion-content>

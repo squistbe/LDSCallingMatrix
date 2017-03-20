@@ -70,7 +70,7 @@ export class Login {
   launchDashboard() {
     this.loading.dismiss();
     this.navCtrl.setRoot(DashboardPage);
-    if(!this.userService.currentUser.user.orgId) this.navCtrl.push(WelcomePage);
+    if(!this.userService.currentUser.user.unitNumber) this.navCtrl.push(WelcomePage);
   }
 
   launchRegister(){

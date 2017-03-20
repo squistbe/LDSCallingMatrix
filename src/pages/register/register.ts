@@ -39,7 +39,7 @@ export class RegisterPage {
     this.authService.createAccount(this.register.value).then((result) => {
       this.loading.dismiss();
       this.navCtrl.setRoot(DashboardPage);
-      if(!this.userService.currentUser.user.orgId) this.navCtrl.push(WelcomePage);
+      if(!this.userService.currentUser.user.unitNumber) this.navCtrl.push(WelcomePage);
     }, (err) => {
         this.loading.dismiss();
         console.log(err);

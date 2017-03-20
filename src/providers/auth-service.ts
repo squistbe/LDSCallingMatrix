@@ -5,6 +5,8 @@ import 'rxjs/add/operator/map';
 
 import { UserService } from './user-service';
 
+const AUTH_API = '/api/auth';
+
 @Injectable()
 export class AuthService {
   userInfo: any;
@@ -41,10 +43,11 @@ export class AuthService {
         let headers = new Headers();
         this.createAuthorizationHeader(headers);
 
-        this.http.get('/api/auth/protected', {headers: headers})
+        this.http.get(AUTH_API + '/protected', {headers: headers})
           .subscribe(res => {
             resolve(res);
           }, (err) => {
+            this.userService.setUserInfo('');
             reject(err);
           });
         });
@@ -56,7 +59,7 @@ export class AuthService {
       let headers = new Headers();
       headers.append('Content-Type', 'application/json');
 
-      this.http.post('/api/auth/register', JSON.stringify(details), {headers: headers})
+      this.http.post(AUTH_API + '/register', JSON.stringify(details), {headers: headers})
         .subscribe(res => {
           let data = res.json();
           this.userService.setUserInfo(data);
@@ -72,12 +75,11 @@ export class AuthService {
       let headers = new Headers();
       headers.append('Content-Type', 'application/json');
 
-      this.http.post('/api/auth/login', JSON.stringify(credentials), {headers: headers})
+      this.http.post(AUTH_API + '/login', JSON.stringify(credentials), {headers: headers})
         .subscribe(res => {
           let data = res.json();
           this.userService.setUserInfo(data);
           resolve(data);
-          resolve(res.json());
         }, (err) => {
           reject(err);
         });

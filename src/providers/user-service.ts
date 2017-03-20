@@ -10,7 +10,7 @@ interface User {
   name: string,
   email: string,
   role: string,
-  orgId?: string
+  unitNumber?: string
 }
 
 export interface UserInfo {
