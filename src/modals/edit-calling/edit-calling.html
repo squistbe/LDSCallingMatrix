@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      {{ calling.name || 'Edit' }}
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <span ion-text color="primary" showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons end>
+      <button ion-button [disabled]="!selectedMember" (click)="save()">
+        <span ion-text color="primary">Save</span>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-searchbar [(ngModel)]="searchTerm" [formControl]="searchControl" (ionInput)="onSearchInput()"></ion-searchbar>
+	<div *ngIf="searching" class="spinner-container" padding text-center>
+		<ion-spinner></ion-spinner>
+	</div>
+  <ion-card *ngIf="selectedMember">
+    <ion-list>
+      <ion-item>
+        {{ selectedMember.name.first + ' ' + selectedMember.name.last }}
+        <ion-buttons end item-left>
+          <button ion-button clear icon-only color="dark" (click)="removeMember()">
+            <ion-icon name="close-circle"></ion-icon>
+          </button>
+        </ion-buttons>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+	<ion-list *ngIf="!searching">
+    <button ion-item *ngFor="let item of items" (click)="itemSelected(item)">
+      {{ item.name.first + ' ' + item.name.last }}
+    </button>
+	</ion-list>
+</ion-content>

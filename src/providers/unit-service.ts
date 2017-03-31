@@ -32,6 +32,7 @@ export interface HouseholdInfo {
 }
 
 export interface MemberInfo {
+  _id: string,
   name: MemberName,
   phone?: string,
   email?: string,
@@ -64,9 +65,20 @@ export class UnitService {
     });
   }
 
-  getUnitHouseholds() {
+  getUnitMembers() {
     return new Promise((resolve, reject) => {
-      this.authService.get(UNIT_API + '/households')
+      this.authService.get(UNIT_API + '/members')
+        .subscribe(res => {
+          resolve(res.json());
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+
+  filterMembers(searchTerm) {
+    return new Promise((resolve, reject) => {
+      this.authService.get(UNIT_API + '/members', searchTerm)
         .subscribe(res => {
           resolve(res.json());
         }, (err) => {

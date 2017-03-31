@@ -1,0 +1,12 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Add Members</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <button type="button" ion-button margin-bottom (click)="downloadMemberCsv()">Download Member CSV</button>
+  <input type="file" (change)="uploadChange($event)">
+</ion-content>

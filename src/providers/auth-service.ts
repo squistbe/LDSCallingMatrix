@@ -1,26 +1,42 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/map';
 
-import { UserService } from './user-service';
+import { UserService, UserInfo } from './user-service';
 
 const AUTH_API = '/api/auth';
 
 @Injectable()
 export class AuthService {
-  userInfo: any;
+  userInfo: UserInfo;
 
-  constructor(public http: Http, public storage: Storage, public userService: UserService) { }
+  constructor(public http: Http, public storage: Storage, public userService: UserService) {}
 
   createAuthorizationHeader(headers: Headers) {
-    headers.append('Authorization', this.userInfo.token);
+    headers.append('Authorization', this.userService.currentUser.token);
   }
 
-  get(url) {
+  get(url: string, search?: any) {
     let headers = new Headers();
+    let params = new URLSearchParams();
+
     this.createAuthorizationHeader(headers);
-    return this.http.get(url, {
+    params.set('searchTerm', search);
+
+    let options = new RequestOptions({
+      headers: headers,
+      search: params
+    });
+
+    return this.http.get(url, options);
+  }
+
+  put(url, data) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    this.createAuthorizationHeader(headers);
+    return this.http.put(url, data, {
       headers: headers
     });
   }
@@ -30,6 +46,15 @@ export class AuthService {
     headers.append('Content-Type', 'application/json');
     this.createAuthorizationHeader(headers);
     return this.http.post(url, data, {
+      headers: headers
+    });
+  }
+
+  delete(url, data) {
+    let headers = new Headers();
+    this.createAuthorizationHeader(headers);
+
+    return this.http.delete(url, {
       headers: headers
     });
   }

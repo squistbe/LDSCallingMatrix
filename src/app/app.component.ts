@@ -7,6 +7,7 @@ import 'rxjs/add/operator/map';
 import { Login } from '../pages/login/login';
 import { DashboardPage } from '../pages/dashboard/dashboard';
 import { MembersPage } from '../pages/members/members';
+import { AddMembersPage } from '../pages/members/add-members';
 
 import { AuthService } from '../providers/auth-service';
 import { UserService } from '../providers/user-service';
@@ -18,14 +19,15 @@ import { UserService } from '../providers/user-service';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
   rootPage: any = Login;
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{title: string, icon: string, component: any}>;
   user: any;
 
   constructor(public platform: Platform, public auth: AuthService, public userService: UserService) {
     this.initializeApp();
     this.pages = [
-      { title: 'Dashboard', component: DashboardPage },
-      { title: 'Members', component: MembersPage }
+      { title: 'Dashboard', icon: 'podium', component: DashboardPage },
+      { title: 'Members', icon: 'people', component: MembersPage },
+      { title: 'Add Members', icon: 'person-add', component: AddMembersPage }
     ];
     this.user = this.userService.currentUser ? this.userService.currentUser.user : '';
   }

@@ -12,6 +12,7 @@ import { UserService } from '../providers/user-service';
 import { UnitService } from '../providers/unit-service';
 import { UploadService } from '../providers/upload-service';
 import { OrgService } from '../providers/org-service';
+import { CallingStatusService} from '../providers/calling-status-service';
 
 // Pages
 import { MyApp } from './app.component';
@@ -20,6 +21,10 @@ import { Login } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
 import { WelcomePage, JoinUnitPage, CreateUnitPage } from '../pages/welcome/welcome';
 import { MembersPage } from '../pages/members/members';
+import { AddMembersPage } from '../pages/members/add-members';
+
+// Modals
+import { EditCallingModal } from '../modals/edit-calling/edit-calling';
 
 @NgModule({
   declarations: [
@@ -30,7 +35,10 @@ import { MembersPage } from '../pages/members/members';
     WelcomePage,
     JoinUnitPage,
     CreateUnitPage,
-    MembersPage
+    AddMembersPage,
+    MembersPage,
+
+    EditCallingModal
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -45,7 +53,10 @@ import { MembersPage } from '../pages/members/members';
     WelcomePage,
     JoinUnitPage,
     CreateUnitPage,
-    MembersPage
+    AddMembersPage,
+    MembersPage,
+
+    EditCallingModal
   ],
   providers: [
     {
@@ -57,7 +68,8 @@ import { MembersPage } from '../pages/members/members';
     UserService,
     UnitService,
     UploadService,
-    OrgService
+    OrgService,
+    CallingStatusService
   ]
 })
 

@@ -3,17 +3,22 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 import { AuthService } from './auth-service';
+import { MemberInfo } from './unit-service';
 
-const ORG_API = '/api/org/';
+const ORG_API = '/api/org';
 
-interface Calling {
+export interface Calling {
   name: string,
-  callingId: string
+  _id: string,
+  sortIndex: number,
+  member?: MemberInfo,
+  status?: any
 }
 
 export interface Org {
   name: string,
   _id: string,
+  sortIndex: number,
   callings: Array<Calling>
 }
 
@@ -24,13 +29,35 @@ export class OrgService {
 
   getOrgs() {
     return new Promise((resolve, reject) => {
-      this.authService.get(ORG_API)
+      this.authService.get(ORG_API, null)
         .subscribe(res => {
           let data = res.json();
           resolve(data);
         }, (err) => {
           reject(err);
         });
+    });
+  }
+
+  updateCalling(params) {
+    return new Promise((resolve, reject) => {
+      this.authService.put(ORG_API + '/calling', JSON.stringify(params))
+        .subscribe(res => {
+          resolve(res.json());
+        }, (err) => {
+          reject(err);
+        })
+    });
+  }
+
+  removeMember(params) {
+    return new Promise((resolve, reject) => {
+      this.authService.put(ORG_API + '/calling/member/remove', params)
+        .subscribe(res => {
+          resolve(res.json());
+        }, (err) => {
+          reject(err);
+        })
     });
   }
 }

@@ -16,11 +16,11 @@ export class MembersPage {
     this.members = this.navParams.get('members');
 
     if(!this.members) {
-      this.unitService.getUnitHouseholds().then((result: Array<MemberInfo>) => {
+      this.unitService.getUnitMembers().then((result: Array<MemberInfo>) => {
         this.members = result;
       }, (err) => {
         console.log(err);
-      })
+      });
     }
   }
 }

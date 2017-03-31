@@ -1,57 +1,132 @@
-import { Component, Pipe } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import { FileChooser } from 'ionic-native';
+import { Component } from '@angular/core';
+import { NavController, ActionSheetController, ModalController, ItemSliding, AlertController } from 'ionic-angular';
 
 import { UploadService } from '../../providers/upload-service';
-import { OrgService, Org } from '../../providers/org-service';
-import { UnitInfo } from '../../providers/unit-service';
+import { OrgService, Org, Calling } from '../../providers/org-service';
+import { UnitInfo, MemberInfo } from '../../providers/unit-service';
+import { UserService } from '../../providers/user-service';
+import { CallingStatusService, CallingStatus } from '../../providers/calling-status-service';
 
-import { MembersPage } from '../members/members';
-
-import * as _ from 'lodash'
-
-@Pipe({ name: 'order-by' })
-export class OrderByPipe {
-  transform(array, args) {
-    return _.sortBy(array, args);
-  }
-}
+import { EditCallingModal } from '../../modals/edit-calling/edit-calling';
 
 @Component({
   selector: 'page-dashboard',
   templateUrl: 'dashboard.html'
 })
 export class DashboardPage {
-  file: File;
-  members: any;
-  orgs: Org;
+  orgs: Array<Org>;
+  editCallingModal: any;
+  callingStatusModal: any;
+  selectedOrg: Org;
+  selectedCalling: Calling;
 
-  constructor(public navCtrl: NavController, public uploadService: UploadService, public orgService: OrgService) {}
+  constructor(
+    public navCtrl: NavController,
+    public actionSheetCtrl: ActionSheetController,
+    public alertCtrl: AlertController,
+    public modalCtrl: ModalController,
+    public uploadService: UploadService,
+    public orgService: OrgService,
+    public userService: UserService,
+    public callingStatusService: CallingStatusService
+  ) {}
 
   ionViewDidLoad() {
-    this.orgService.getOrgs().then((result: Org) => {
+    this.orgService.getOrgs().then((result: Array<Org>) => {
       this.orgs = result;
     }, (err) => {
       console.log(err)
     });
   }
 
-  uploadChange(event: EventTarget) {
-    let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
-    let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
-    let files: FileList = target.files;
-    this.file = files[0];
-    this.uploadService.addMembers(this.file).then((result: UnitInfo) => {
-      this.navCtrl.push(MembersPage, { members: result.members });
-      this.members = result.members;
-    }, (err) => {
-      console.log(err)
+  moreClick(calling, org, slide: ItemSliding) {
+    slide.close();
+
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'More',
+      buttons: [
+        {
+          text: 'Add Member',
+          handler: () => {
+            this.editCallingModal = this.modalCtrl.create(EditCallingModal, {calling: calling, org: org});
+            this.editCallingModal.present();
+            this.editCallingModal.onDidDismiss((calling: Calling) => {
+              calling = calling;
+            });
+          }
+        },
+        {
+          text: 'Remove Member',
+          role: 'destructive',
+          handler: () => {
+            let params = {
+              memberId: calling.member._id,
+              callingId: calling._id,
+              orgId: org._id
+            }
+
+            this.orgService.removeMember(params);
+          }
+        },
+        {
+          text: 'Calling Status',
+          handler: () => {
+            this.callingStatusService.getCallingStatuses().then((result: Array<CallingStatus>) => {
+              let config = {
+                title: 'Calling Status',
+                inputs: result,
+                buttons: [
+                  {
+                    text: 'OK',
+                    handler: data => {
+                      let params = {
+                        statusId: data,
+                        callingId: calling._id,
+                        orgId: org._id
+                      };
+
+                      this.orgService.updateCalling(params).then((result: Calling) => {
+                        console.log(result);
+                      }, (err) => {
+                        console.log(err);
+                      });
+                    }
+                  },
+                  {
+                    text: 'Cancel',
+                    role: 'cancel'
+                  }
+                ]
+              };
+
+              this.callingStatusModal = this.alertCtrl.create(config);
+              this.callingStatusModal.present();
+            }, (err) => {
+              console.log(err);
+            });
+          }
+        },
+        {
+          text: 'Duplicate'
+        },
+        {
+          text: 'Email'
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ]
     });
+
+    actionSheet.present();
   }
 
-  addMembers() {
-    FileChooser.open()
-    .then(uri => console.log(uri))
-    .catch(e => console.log(e));
+  contact(member, type, slide: ItemSliding) {
+    slide.close();
+    if (member && member.phone) {
+      let memberNumber = encodeURIComponent(member.phone);
+      window.location.href = type + ':' + memberNumber;
+    }
   }
 }

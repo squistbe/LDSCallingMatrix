@@ -11,9 +11,16 @@ $font-path: "../assets/fonts";
 // the Sass variables found in Ionic's source scss files.
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
-
-
-
+$calling-done: #980000;
+$calling-waiting: #f90;
+$calling-pending: #4c89bd;
+$calling-pending-release: #4c89bd;
+$calling-recommended: #f53d3d;
+$calling-go: #00ff00;
+$calling-go-release: #5a8c5a;
+$calling-sustain: #9900ff;
+$calling-release: #7ed8d8;
+$calling-set-apart: #f0f;
 
 // Named Color Variables
 // --------------------------------------------------
@@ -32,20 +39,72 @@ $colors: (
   errorText: (
     base: #fff,
     contrast: #f53d3d
-  )
+  ),
+  calling_done: $calling-done,
+  calling_waiting: $calling-waiting,
+  calling_pending: $calling-pending,
+  calling_pending_release: $calling-pending-release,
+  calling_recommended: $calling-recommended,
+  calling_go: $calling-go,
+  calling_go_release: $calling-go-release,
+  calling_sustain: $calling-sustain,
+  calling_release: $calling-release,
+  calling_set_apart: $calling-set-apart
 );
+
+
+button#done.alert-radio .alert-radio-label{
+  color: $calling-done;
+}
+
+button#waiting.alert-radio .alert-radio-label{
+  color: $calling-waiting;
+}
+
+button#pending.alert-radio .alert-radio-label{
+  color: $calling-pending;
+}
+
+button#pending_release.alert-radio .alert-radio-label{
+  color: $calling-pending-release;
+}
+
+button#recommended.alert-radio .alert-radio-label{
+  color: $calling-recommended;
+}
+
+button#go.alert-radio .alert-radio-label{
+  color: $calling-go;
+}
+
+button#go_release.alert-radio .alert-radio-label{
+  color: $calling-go-release;
+}
+
+button#sustain.alert-radio .alert-radio-label{
+  color: $calling-sustain;
+}
+
+button#release.alert-radio .alert-radio-label{
+  color: $calling-release;
+}
+
+button#set_apart.alert-radio .alert-radio-label{
+  color: $calling-set-apart;
+}
 
 
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
-
+$alert-ios-radio-label-text-color-checked: #387ef5 !important;
 
 
 
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
+$alert-md-radio-label-text-color-checked: #387ef5 !important;
 
 
 

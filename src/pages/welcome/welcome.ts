@@ -2,10 +2,12 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ModalController, ViewController, LoadingController, AlertController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
-import { UnitService, UnitInfo } from '../../providers/unit-service';
+import { UnitService, UnitInfo, MemberInfo } from '../../providers/unit-service';
 import { UserService, UserInfo } from '../../providers/user-service';
+import { UploadService } from '../../providers/upload-service';
 
 import { DashboardPage } from '../dashboard/dashboard';
+import { AddMembersPage } from '../members/add-members';
 
 @Component({
   selector: 'page-welcome',
@@ -125,7 +127,8 @@ export class CreateUnitPage {
       this.currentUser.user.unitNumber = result.unitNumber;
       this.userService.setUserInfo(this.currentUser);
       this.loading.dismiss();
-      this.navCtrl.setRoot(DashboardPage);
+      this.navCtrl.push(AddMembersPage, {unitNumber: this.currentUser.user.unitNumber});
+      // this.navCtrl.setRoot(DashboardPage, {unitInfo: result});
     }, (err) => {
       this.loading.dismiss();
       this.alertCtrl.create({

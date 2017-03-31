@@ -4,6 +4,11 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>{{title || 'Dashboard'}}</ion-title>
+    <ion-buttons end>
+      <button ion-button>
+        <ion-icon name="funnel" (click)="filter()"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -12,11 +17,29 @@
     <ion-list-header>
       {{org.name}}
     </ion-list-header>
-    <ion-item-sliding *ngFor="let calling of org.callings | order-by: 'sortIndex'">
-      <ion-item>
-        {{calling.name}}
-      </ion-item>
-    </ion-item-sliding>
+    <ion-item-group reorder="true">
+      <ion-item-sliding *ngFor="let calling of org.callings" #slidingItem>
+        <ion-item text-wrap>
+          <h2>{{calling.name}}</h2>
+          <p *ngIf="calling.member"><i>{{calling.member.name.first + ' ' + calling.member.name.last}}</i></p>
+          <p *ngIf="!calling.member"><i>vacant</i></p>
+          <p *ngIf="calling.status" item-content color="calling_{{calling.status.id}}">{{calling.status.label}}</p>
+        </ion-item>
+        <ion-item-options>
+          <button ion-button color="light" icon-left (click)="moreClick(calling, org, slidingItem)">
+            <ion-icon name="ios-more"></ion-icon>
+            More
+          </button>
+          <button ion-button color="primary" icon-left (click)="contact(calling.member, 'sms', slidingItem)">
+            <ion-icon name="text"></ion-icon>
+            Text
+          </button>
+          <button ion-button color="secondary" icon-left (click)="contact(calling.member, 'tel', slidingItem)">
+            <ion-icon name="call"></ion-icon>
+            Call
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-item-group>
   </ion-list>
-  <!-- <input type="file" (change)="uploadChange($event)"> -->
 </ion-content>
