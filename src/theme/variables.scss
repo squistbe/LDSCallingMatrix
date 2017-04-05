@@ -52,8 +52,12 @@ $colors: (
   calling_set_apart: $calling-set-apart
 );
 
+ion-item-group[ng-reflect-reorder="true"].dashboard-list ion-reorder {
+  color: #387ef5;
+  opacity: 1;
+}
 
-button#done.alert-radio .alert-radio-label{
+button#done.alert-radio .alert-radio-label {
   color: $calling-done;
 }
 

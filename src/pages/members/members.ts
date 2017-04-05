@@ -8,7 +8,7 @@ import { UnitService, MemberInfo } from '../../providers/unit-service';
   templateUrl: 'members.html'
 })
 export class MembersPage {
-  members: Array<MemberInfo>
+  members: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public unitService: UnitService) {}
 
@@ -16,7 +16,7 @@ export class MembersPage {
     this.members = this.navParams.get('members');
 
     if(!this.members) {
-      this.unitService.getUnitMembers().then((result: Array<MemberInfo>) => {
+      this.unitService.getUnitMembers().then((result) => {
         this.members = result;
       }, (err) => {
         console.log(err);

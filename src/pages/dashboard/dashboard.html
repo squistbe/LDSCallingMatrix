@@ -1,12 +1,15 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="{{toolbarColor}}">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{title || 'Dashboard'}}</ion-title>
+    <ion-title>{{title}}</ion-title>
     <ion-buttons end>
-      <button ion-button>
-        <ion-icon name="funnel" (click)="filter()"></ion-icon>
+      <button ion-button [hidden]="reorderCallings" (click)="openFilter()">
+        <ion-icon name="more"></ion-icon>
+      </button>
+      <button ion-button [hidden]="!reorderCallings" (click)="doneReordering()">
+        Done
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -17,7 +20,7 @@
     <ion-list-header>
       {{org.name}}
     </ion-list-header>
-    <ion-item-group reorder="true">
+    <ion-item-group class="dashboard-list" reorder="{{reorderCallings}}" (ionItemReorder)="reorderItems($event, org._id, org.callings)">
       <ion-item-sliding *ngFor="let calling of org.callings" #slidingItem>
         <ion-item text-wrap>
           <h2>{{calling.name}}</h2>

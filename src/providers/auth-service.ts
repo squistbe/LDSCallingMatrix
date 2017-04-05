@@ -22,7 +22,9 @@ export class AuthService {
     let params = new URLSearchParams();
 
     this.createAuthorizationHeader(headers);
-    params.set('searchTerm', search);
+    for (var param in search) {
+      params.set(param, search[param]);
+    }
 
     let options = new RequestOptions({
       headers: headers,

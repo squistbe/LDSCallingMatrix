@@ -27,14 +27,25 @@ export class OrgService {
 
   constructor(public authService: AuthService) {}
 
-  getOrgs() {
+  getOrgs(params?) {
     return new Promise((resolve, reject) => {
-      this.authService.get(ORG_API, null)
+      this.authService.get(ORG_API, params)
         .subscribe(res => {
           let data = res.json();
           resolve(data);
         }, (err) => {
           reject(err);
+        });
+    });
+  }
+
+  reorderOrgs(params) {
+    return new Promise((resolve, reject) => {
+      this.authService.put(ORG_API + '/reorder', params)
+        .subscribe(res => {
+          resolve(res.json());
+        }, err => {
+          console.log(err);
         });
     });
   }

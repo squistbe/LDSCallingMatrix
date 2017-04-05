@@ -23,9 +23,9 @@ export class CallingStatusService {
 
   constructor(public authService: AuthService) {}
 
-  getCallingStatuses() {
+  getCallingStatuses(params?) {
     return new Promise((resolve, reject) => {
-      this.authService.get(CALLING_STATUS_API)
+      this.authService.get(CALLING_STATUS_API, params)
         .subscribe(res => {
           let data = res.json();
           resolve(data);

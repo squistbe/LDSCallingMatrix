@@ -12,7 +12,7 @@ import { OrgService } from '../../providers/org-service';
 export class EditCallingModal {
   searchTerm: string = '';
 	searchControl: FormControl;
-	items: Array<MemberInfo>;
+	items: any;
 	searching: any = false;
   calling: any;
   org: any;
@@ -36,7 +36,11 @@ export class EditCallingModal {
 	}
 
   setFilteredItems() {
-    this.unitService.filterMembers(this.searchTerm).then((result: Array<MemberInfo>) => {
+    let params = {
+      searchTerm: this.searchTerm
+    };
+
+    this.unitService.filterMembers(params).then((result) => {
       this.searching = false;
       this.items = result;
     }, (err) => {
