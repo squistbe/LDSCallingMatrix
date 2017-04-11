@@ -34,7 +34,7 @@ export class AuthService {
     return this.http.get(url, options);
   }
 
-  put(url, data) {
+  put(url, data?) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     this.createAuthorizationHeader(headers);
@@ -52,7 +52,7 @@ export class AuthService {
     });
   }
 
-  delete(url, data) {
+  delete(url, data?) {
     let headers = new Headers();
     this.createAuthorizationHeader(headers);
 

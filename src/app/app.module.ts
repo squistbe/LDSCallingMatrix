@@ -22,9 +22,11 @@ import { RegisterPage } from '../pages/register/register';
 import { WelcomePage, JoinUnitPage, CreateUnitPage } from '../pages/welcome/welcome';
 import { MembersPage } from '../pages/members/members';
 import { AddMembersPage } from '../pages/members/add-members';
+import { MyProfilePage } from '../pages/my-profile/my-profile';
 
 // Modals
 import { EditCallingModal } from '../modals/edit-calling/edit-calling';
+import { AddCallingModal } from '../modals/add-calling/add-calling';
 
 @NgModule({
   declarations: [
@@ -37,8 +39,10 @@ import { EditCallingModal } from '../modals/edit-calling/edit-calling';
     CreateUnitPage,
     AddMembersPage,
     MembersPage,
+    MyProfilePage,
 
-    EditCallingModal
+    EditCallingModal,
+    AddCallingModal
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -55,8 +59,10 @@ import { EditCallingModal } from '../modals/edit-calling/edit-calling';
     CreateUnitPage,
     AddMembersPage,
     MembersPage,
+    MyProfilePage,
 
-    EditCallingModal
+    EditCallingModal,
+    AddCallingModal
   ],
   providers: [
     {

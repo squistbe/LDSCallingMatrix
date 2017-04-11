@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar color="{{toolbarColor}}">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>My Profile</ion-title>
+    <ion-buttons end>
+      <button ion-button [hidden]="editing" (click)="edit()">
+        Edit
+      </button>
+      <button ion-button [hidden]="!editing" (click)="save()">
+        Save
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+
+</ion-content>

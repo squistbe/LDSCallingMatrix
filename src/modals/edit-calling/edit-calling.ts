@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ViewController, Platform, NavParams } from 'ionic-angular';
 import 'rxjs/add/operator/debounceTime';
@@ -10,6 +10,7 @@ import { OrgService } from '../../providers/org-service';
   templateUrl: 'edit-calling.html'
 })
 export class EditCallingModal {
+  @ViewChild('memberSearch') memberSearch;
   searchTerm: string = '';
 	searchControl: FormControl;
 	items: any;
@@ -25,7 +26,7 @@ export class EditCallingModal {
   }
 
   ionViewDidLoad() {
-    this.setFilteredItems();
+    this.memberSearch.setFocus();
     this.searchControl.valueChanges.debounceTime(1000).subscribe(search => {
       this.setFilteredItems();
     });
@@ -58,15 +59,12 @@ export class EditCallingModal {
 
   save() {
     let params = {
-      memberId: this.selectedMember._id,
-      callingId: this.calling._id,
-      orgId: this.org._id
-    }
-    this.orgService.updateCalling(params).then((result: MemberInfo) => {
+      memberId: this.selectedMember._id
+    };
+
+    this.orgService.updateOrgCalling(this.org._id, this.calling._id, params).then((result: MemberInfo) => {
       this.viewCtrl.dismiss(result);
-    }, (err) => {
-      console.log(err);
-    });
+    }, err => console.log(err));
   }
 
   dismiss() {

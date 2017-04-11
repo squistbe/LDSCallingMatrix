@@ -29,46 +29,43 @@ export class OrgService {
 
   getOrgs(params?) {
     return new Promise((resolve, reject) => {
-      this.authService.get(ORG_API, params)
-        .subscribe(res => {
-          let data = res.json();
-          resolve(data);
-        }, (err) => {
-          reject(err);
-        });
+      this.authService.get(ORG_API, params).subscribe(res => resolve(res.json()), err => reject(err));
+    });
+  }
+
+  getOrgCallings(params?) {
+    return new Promise((resolve, reject) => {
+      this.authService.get(ORG_API + '/callings', params).subscribe(res => resolve(res.json()), err => reject(err));
+    });
+  }
+
+  addOrgCalling(params, id) {
+    return new Promise((resolve, reject) => {
+      this.authService.post(ORG_API + `/${id}/calling`, JSON.stringify(params)).subscribe(res => resolve(res.json()), err => reject(err));
+    });
+  }
+
+  updateOrgCalling(orgId, callingId, params) {
+    return new Promise((resolve, reject) => {
+      this.authService.put(ORG_API + `/${orgId}/calling/${callingId}`, params).subscribe(res => resolve(res.json()), err => reject(err));
+    });
+  }
+
+  removeOrgCalling(orgId, callingId) {
+    return new Promise((resolve, reject) => {
+      this.authService.delete(ORG_API + `/${orgId}/calling/${callingId}`).subscribe(res => resolve(res.json()), err => reject(err));
     });
   }
 
   reorderOrgs(params) {
     return new Promise((resolve, reject) => {
-      this.authService.put(ORG_API + '/reorder', params)
-        .subscribe(res => {
-          resolve(res.json());
-        }, err => {
-          console.log(err);
-        });
+      this.authService.put(ORG_API + '/reorder', params).subscribe(res => resolve(res.json()), err => reject(err));
     });
   }
 
-  updateCalling(params) {
+  removeMemberFromCalling(orgId, callingId, memberId) {
     return new Promise((resolve, reject) => {
-      this.authService.put(ORG_API + '/calling', JSON.stringify(params))
-        .subscribe(res => {
-          resolve(res.json());
-        }, (err) => {
-          reject(err);
-        })
-    });
-  }
-
-  removeMember(params) {
-    return new Promise((resolve, reject) => {
-      this.authService.put(ORG_API + '/calling/member/remove', params)
-        .subscribe(res => {
-          resolve(res.json());
-        }, (err) => {
-          reject(err);
-        })
+      this.authService.delete(ORG_API + `/${orgId}/calling/${callingId}/member/${memberId}`).subscribe(res => resolve(res.json()), err => reject(err));
     });
   }
 }

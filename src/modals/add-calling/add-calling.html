@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      {{ calling.name || 'Edit' }}
+    <ion-title text-wrap>
+      {{ org.name || 'Add' }}
     </ion-title>
     <ion-buttons start>
       <button ion-button (click)="dismiss()">
@@ -10,7 +10,7 @@
       </button>
     </ion-buttons>
     <ion-buttons end>
-      <button ion-button [disabled]="!selectedMember" (click)="save()">
+      <button ion-button [disabled]="!selectedCalling" (click)="save()">
         <span ion-text color="primary">Save</span>
       </button>
     </ion-buttons>
@@ -18,24 +18,20 @@
 </ion-header>
 
 <ion-content>
-  <ion-searchbar [(ngModel)]="searchTerm" [formControl]="searchControl" (ionInput)="onSearchInput()" #memberSearch></ion-searchbar>
-	<div *ngIf="searching" class="spinner-container" padding text-center>
-		<ion-spinner></ion-spinner>
-	</div>
-  <ion-card *ngIf="selectedMember">
+  <ion-card *ngIf="selectedCalling">
     <ion-list>
-      <ion-item>
-        {{ selectedMember.name }}
+      <ion-item text-wrap>
+        {{ selectedCalling.name }}
         <ion-buttons end item-left>
-          <button ion-button clear icon-only color="dark" (click)="removeMember()">
+          <button ion-button clear icon-only color="dark" (click)="removeCalling()">
             <ion-icon name="close-circle"></ion-icon>
           </button>
         </ion-buttons>
       </ion-item>
     </ion-list>
   </ion-card>
-	<ion-list *ngIf="!searching">
-    <button ion-item *ngFor="let item of items" (click)="itemSelected(item)">
+	<ion-list>
+    <button text-wrap ion-item *ngFor="let item of items" (click)="itemSelected(item)">
       {{ item.name }}
     </button>
 	</ion-list>

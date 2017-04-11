@@ -6,22 +6,20 @@
     <ion-title>Members</ion-title>
   </ion-navbar>
 </ion-header>
-
-
 <ion-content>
   <ion-list>
     <ion-item-sliding *ngFor="let member of members">
-      <ion-item>
+      <ion-item text-wrap>
         <h2>{{ member.name }}</h2>
         <p>{{ member.phone }}</p>
         <p item-right> {{ member.email }}</p>
       </ion-item>
       <ion-item-options side="right">
-        <button ion-button>
+        <button ion-button [hidden]="!member.email">
           <ion-icon name="at"></ion-icon>
           Email
         </button>
-        <button ion-button color="secondary">
+        <button ion-button color="secondary" [hidden]="!member.phone">
           <ion-icon name="text"></ion-icon>
           Text
         </button>

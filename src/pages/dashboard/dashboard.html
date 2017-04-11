@@ -19,11 +19,14 @@
   <ion-list *ngFor="let org of orgs">
     <ion-list-header>
       {{org.name}}
+      <button ion-button item-right (click)="addCalling(org)">
+        <ion-icon name="add"></ion-icon>
+      </button>
     </ion-list-header>
     <ion-item-group class="dashboard-list" reorder="{{reorderCallings}}" (ionItemReorder)="reorderItems($event, org._id, org.callings)">
       <ion-item-sliding *ngFor="let calling of org.callings" #slidingItem>
         <ion-item text-wrap>
-          <h2>{{calling.name}}</h2>
+          <h2>{{calling.name}} <span *ngIf="calling.className">- </span><span *ngIf="calling.className" item-content color="primary">{{calling.className}}</span></h2>
           <p *ngIf="calling.member"><i>{{calling.member.name.first + ' ' + calling.member.name.last}}</i></p>
           <p *ngIf="!calling.member"><i>vacant</i></p>
           <p *ngIf="calling.status" item-content color="calling_{{calling.status.id}}">{{calling.status.label}}</p>
@@ -33,11 +36,15 @@
             <ion-icon name="ios-more"></ion-icon>
             More
           </button>
-          <button ion-button color="primary" icon-left (click)="contact(calling.member, 'sms', slidingItem)">
+          <button ion-button color="danger" icon-left [hidden]="calling.member" (click)="removeCalling(org, calling)">
+            <ion-icon name="trash"></ion-icon>
+            Remove
+          </button>
+          <button ion-button color="primary" icon-left [hidden]="!calling.member || !calling.member.phone" (click)="contact(calling.member, 'sms', slidingItem)">
             <ion-icon name="text"></ion-icon>
             Text
           </button>
-          <button ion-button color="secondary" icon-left (click)="contact(calling.member, 'tel', slidingItem)">
+          <button ion-button color="secondary" icon-left [hidden]="!calling.member || !calling.member.phone" (click)="contact(calling.member, 'tel', slidingItem)">
             <ion-icon name="call"></ion-icon>
             Call
           </button>

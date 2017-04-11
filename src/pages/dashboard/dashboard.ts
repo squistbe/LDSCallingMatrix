@@ -9,6 +9,7 @@ import { UserService } from '../../providers/user-service';
 import { CallingStatusService, CallingStatus } from '../../providers/calling-status-service';
 
 import { EditCallingModal } from '../../modals/edit-calling/edit-calling';
+import { AddCallingModal } from '../../modals/add-calling/add-calling';
 
 interface FilterQuery {
   vacantCallings?: boolean,
@@ -23,6 +24,7 @@ interface FilterQuery {
 export class DashboardPage {
   orgs: Array<Org>;
   editCallingModal: any;
+  addCallingModal: any;
   callingStatusModal: any;
   selectedOrg: Org;
   selectedCalling: Calling;
@@ -66,74 +68,17 @@ export class DashboardPage {
     slide.close();
 
     let actionSheet = this.actionSheetCtrl.create({
-      title: 'More',
       buttons: [
         {
-          text: 'Add Member',
+          text: (calling.member ? 'Change' : 'Add') + ' Member',
           handler: () => {
             this.editCallingModal = this.modalCtrl.create(EditCallingModal, {calling: calling, org: org});
             this.editCallingModal.present();
-            this.editCallingModal.onDidDismiss((calling: Calling) => {
-              calling = calling;
-            });
+            this.editCallingModal.onDidDismiss(() => this.orgService.getOrgs().then((orgs: Array<Org>) => this.orgs = orgs));
           }
         },
         {
-          text: 'Remove Member',
-          role: 'destructive',
-          handler: () => {
-            let params = {
-              memberId: calling.member._id,
-              callingId: calling._id,
-              orgId: org._id
-            }
-
-            this.orgService.removeMember(params);
-          }
-        },
-        {
-          text: 'Calling Status',
-          handler: () => {
-            this.callingStatusService.getCallingStatuses({type: 'radio'}).then((result: Array<CallingStatus>) => {
-              let config = {
-                title: 'Calling Status',
-                inputs: result,
-                buttons: [
-                  {
-                    text: 'Apply',
-                    handler: data => {
-                      let params = {
-                        statusId: data,
-                        callingId: calling._id,
-                        orgId: org._id
-                      };
-
-                      this.orgService.updateCalling(params).then((result: Calling) => {
-                        console.log(result);
-                      }, (err) => {
-                        console.log(err);
-                      });
-                    }
-                  },
-                  {
-                    text: 'Cancel',
-                    role: 'cancel'
-                  }
-                ]
-              };
-
-              this.callingStatusModal = this.alertCtrl.create(config);
-              this.callingStatusModal.present();
-            }, (err) => {
-              console.log(err);
-            });
-          }
-        },
-        {
-          text: 'Duplicate'
-        },
-        {
-          text: 'Email'
+          text: 'Duplicate Calling'
         },
         {
           text: 'Cancel',
@@ -142,15 +87,68 @@ export class DashboardPage {
       ]
     });
 
+    if (calling.hasClass) {
+      actionSheet.addButton({
+        text: (calling.className ? 'Change' : 'Add') + ' Class',
+        handler: () => {
+
+        }
+      });
+    }
+
+    if (calling.member) {
+      actionSheet.addButton({
+        text: (calling.status ? 'Change' : 'Add') + ' Calling Status',
+        handler: () => {
+          this.callingStatusService.getCallingStatuses({type: 'radio'}).then((result: Array<CallingStatus>) => {
+            let config = {
+              title: 'Calling Status',
+              inputs: result,
+              buttons: [
+                {
+                  text: 'Apply',
+                  handler: statusId => {
+                    this.orgService.updateOrgCalling(org._id, calling._id, {statusId: statusId}).then(() => this.orgService.getOrgs().then((orgs: Array<Org>) => this.orgs = orgs));
+                  }
+                },
+                {
+                  text: 'Cancel',
+                  role: 'cancel'
+                }
+              ]
+            };
+
+            this.callingStatusModal = this.alertCtrl.create(config);
+            this.callingStatusModal.present();
+          }, (err) => {
+            console.log(err);
+          });
+        }
+      });
+
+      if (calling.member.email) {
+        actionSheet.addButton({text: 'Email Member'});
+      }
+
+      actionSheet.addButton({
+        text: 'Remove Member',
+        role: 'destructive',
+        handler: () => this.orgService.removeMemberFromCalling(org._id, calling._id, calling.member._id).then(() => this.orgService.getOrgs().then((orgs: Array<Org>) => this.orgs = orgs))
+      });
+
+      actionSheet.addButton({
+        text: 'Remove Calling',
+        role: 'destructive',
+        handler: () => this.orgService.removeOrgCalling(org._id, calling._id).then(() => this.orgService.getOrgs().then((orgs: Array<Org>) => this.orgs = orgs))
+      });
+    }
     actionSheet.present();
   }
 
   contact(member, type, slide: ItemSliding) {
     slide.close();
-    if (member && member.phone) {
-      let memberNumber = encodeURIComponent(member.phone);
-      window.location.href = type + ':' + memberNumber;
-    }
+    let memberNumber = encodeURIComponent(member.phone);
+    window.location.href = type + ':' + memberNumber;
   }
 
   reorderItems(indexes, orgId, callings) {
@@ -291,6 +289,17 @@ export class DashboardPage {
     this.reorderCallings = false;
     this.toolbarColor = 'light';
     this.title = 'Dashboard';
+  }
+
+  addCalling(org) {
+    this.addCallingModal = this.modalCtrl.create(AddCallingModal, {org: org});
+    this.addCallingModal.present();
+  }
+
+  removeCalling(org, calling) {
+    this.orgService.removeOrgCalling(org._id, calling._id).then(result => {
+      org.callings.splice(org.callings.indexOf(calling), 1);
+    }, err => console.log(err));
   }
 }
 
