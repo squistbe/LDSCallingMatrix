@@ -30,7 +30,7 @@ export class UserService {
         this.currentUser = res;
 
         if(this.currentUser) resolve(this.currentUser);
-        else resolve({error: 'No user found'});
+        else resolve(null);
       });
     });
   }

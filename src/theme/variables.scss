@@ -39,18 +39,39 @@ $colors: (
   errorText: (
     base: #fff,
     contrast: #f53d3d
-  ),
-  calling_done: $calling-done,
-  calling_waiting: $calling-waiting,
-  calling_pending: $calling-pending,
-  calling_pending_release: $calling-pending-release,
-  calling_recommended: $calling-recommended,
-  calling_go: $calling-go,
-  calling_go_release: $calling-go-release,
-  calling_sustain: $calling-sustain,
-  calling_release: $calling-release,
-  calling_set_apart: $calling-set-apart
+  )
 );
+
+.calling_done {
+  color: $calling-done !important;
+}
+.calling_waiting {
+  color: $calling-waiting !important;
+}
+.calling_pending {
+  color: $calling-pending !important;
+}
+.calling_pending_release {
+  color: $calling-pending-release !important;
+}
+.calling_recommended {
+  color: $calling-recommended !important;
+}
+.calling_go {
+  color: $calling-go !important;
+}
+.calling_go_release {
+  color: $calling-go-release !important;
+}
+.calling_sustain {
+  color: $calling-sustain !important;
+}
+.calling_release {
+  color: $calling-release !important;
+}
+.calling_set_apart {
+  color: $calling-set-apart !important;
+}
 
 ion-item-group[ng-reflect-reorder="true"].dashboard-list ion-reorder {
   color: #387ef5;

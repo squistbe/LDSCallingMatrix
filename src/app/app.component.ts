@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen } from 'ionic-native';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
@@ -23,7 +24,13 @@ export class MyApp {
   pages: Array<{title: string, icon?: string, component?: any}>;
   user: any;
 
-  constructor(public platform: Platform, public auth: AuthService, public userService: UserService) {
+  constructor(
+    public platform: Platform,
+    public auth: AuthService,
+    public userService: UserService,
+    public splashScreen: SplashScreen,
+    public statusBar: StatusBar
+  ) {
     this.initializeApp();
     this.pages = [
       { title: 'Dashboard', icon: 'podium', component: DashboardPage },
@@ -36,8 +43,8 @@ export class MyApp {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      StatusBar.styleDefault();
-      Splashscreen.hide();
+      this.statusBar.styleDefault();
+      this.splashScreen.hide();
     });
   }
 

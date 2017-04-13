@@ -1,10 +1,14 @@
 // Angular Modules
 import { NgModule, ErrorHandler } from '@angular/core';
 import { HttpModule } from '@angular/http';
+import { BrowserModule } from '@angular/platform-browser';
 
 // Ionic Modules
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
+import { IonicStorageModule } from '@ionic/storage';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
 
 // Providers
 import { AuthService } from '../providers/auth-service';
@@ -46,7 +50,9 @@ import { AddCallingModal } from '../modals/add-calling/add-calling';
   ],
   imports: [
     IonicModule.forRoot(MyApp),
-    HttpModule
+    HttpModule,
+    BrowserModule,
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -69,7 +75,8 @@ import { AddCallingModal } from '../modals/add-calling/add-calling';
       provide: ErrorHandler,
       useClass: IonicErrorHandler
     },
-    Storage,
+    SplashScreen,
+    StatusBar,
     AuthService,
     UserService,
     UnitService,

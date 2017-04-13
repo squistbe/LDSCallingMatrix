@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
-import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/map';
 
 import { UserService, UserInfo } from './user-service';
@@ -11,7 +10,7 @@ const AUTH_API = '/api/auth';
 export class AuthService {
   userInfo: UserInfo;
 
-  constructor(public http: Http, public storage: Storage, public userService: UserService) {}
+  constructor(public http: Http, public userService: UserService) {}
 
   createAuthorizationHeader(headers: Headers) {
     headers.append('Authorization', this.userService.currentUser.token);
@@ -63,21 +62,15 @@ export class AuthService {
 
   checkAuthentication() {
     return new Promise((resolve, reject) => {
-      //Load token if exists
+      // load token if exists
       this.userService.getUserInfo().then((value) => {
-        this.userInfo = value;
-
-        let headers = new Headers();
-        this.createAuthorizationHeader(headers);
-
-        this.http.get(AUTH_API + '/protected', {headers: headers})
-          .subscribe(res => {
-            resolve(res);
-          }, (err) => {
-            this.userService.setUserInfo('');
-            reject(err);
-          });
-        });
+        if (value) {
+          this.userInfo = value;
+          let headers = new Headers();
+          this.createAuthorizationHeader(headers);
+          this.http.get(AUTH_API + '/protected', {headers: headers}).subscribe(res => resolve(res.json()), err => reject(err));
+        }
+      });
     });
   }
 
