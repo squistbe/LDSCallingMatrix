@@ -2,11 +2,9 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ModalController, ViewController, LoadingController, AlertController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
-import { UnitService, UnitInfo, MemberInfo } from '../../providers/unit-service';
+import { UnitService, UnitInfo } from '../../providers/unit-service';
 import { UserService, UserInfo } from '../../providers/user-service';
-import { UploadService } from '../../providers/upload-service';
 
-import { DashboardPage } from '../dashboard/dashboard';
 import { AddMembersPage } from '../members/add-members';
 
 @Component({

@@ -1,3 +1,13 @@
 page-dashboard {
-   
+  .dashboard-list {
+    border-bottom: 0.55px solid #c8c7cc;
+
+    ion-list-header[sticky] {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 0;
+      background-color: #efeff4;
+      z-index: 100;
+    }
+  }
 }

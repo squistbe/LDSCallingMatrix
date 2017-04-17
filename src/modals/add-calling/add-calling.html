@@ -17,13 +17,13 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-card *ngIf="selectedCalling">
+<ion-content class="outer-content">
+  <ion-card *ngIf="selectedCalling" sticky>
     <ion-list>
-      <ion-item text-wrap>
-        {{ selectedCalling.name }}
+      <ion-item text-wrap color="primaryText">
+        {{ selectedCalling.name }} <span *ngIf="selectedCalling.className">- {{ selectedCalling.className }}</span>
         <ion-buttons end item-left>
-          <button ion-button clear icon-only color="dark" (click)="removeCalling()">
+          <button ion-button clear icon-only color="primary" (click)="removeCalling()">
             <ion-icon name="close-circle"></ion-icon>
           </button>
         </ion-buttons>
@@ -32,7 +32,10 @@
   </ion-card>
 	<ion-list>
     <button text-wrap ion-item *ngFor="let item of items" (click)="itemSelected(item)">
-      {{ item.name }}
+      {{ item.name }} <span *ngIf="item.className">- {{ item.className }}</span>
     </button>
 	</ion-list>
+  <ion-fab right bottom>
+    <button ion-fab (click)="addCalling()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
 </ion-content>

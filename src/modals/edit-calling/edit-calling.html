@@ -17,23 +17,23 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-searchbar [(ngModel)]="searchTerm" [formControl]="searchControl" (ionInput)="onSearchInput()" #memberSearch></ion-searchbar>
-	<div *ngIf="searching" class="spinner-container" padding text-center>
-		<ion-spinner></ion-spinner>
-	</div>
-  <ion-card *ngIf="selectedMember">
+<ion-content class="outer-content">
+  <ion-searchbar sticky [(ngModel)]="searchTerm" [formControl]="searchControl" (ionInput)="onSearchInput()" #memberSearch></ion-searchbar>
+  <ion-card *ngIf="selectedMember" sticky class="outer-content">
     <ion-list>
-      <ion-item>
+      <ion-item color="primaryText">
         {{ selectedMember.name }}
         <ion-buttons end item-left>
-          <button ion-button clear icon-only color="dark" (click)="removeMember()">
+          <button ion-button clear icon-only color="primary" (click)="removeMember()">
             <ion-icon name="close-circle"></ion-icon>
           </button>
         </ion-buttons>
       </ion-item>
     </ion-list>
   </ion-card>
+  <div *ngIf="searching" class="spinner-container" padding text-center>
+		<ion-spinner></ion-spinner>
+	</div>
 	<ion-list *ngIf="!searching">
     <button ion-item *ngFor="let item of items" (click)="itemSelected(item)">
       {{ item.name }}

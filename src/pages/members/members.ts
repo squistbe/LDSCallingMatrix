@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { UnitService, MemberInfo } from '../../providers/unit-service';
+import { UnitService } from '../../providers/unit-service';
 
 @Component({
   selector: 'page-members',
@@ -15,12 +15,6 @@ export class MembersPage {
   ionViewDidLoad() {
     this.members = this.navParams.get('members');
 
-    if(!this.members) {
-      this.unitService.getUnitMembers().then((result) => {
-        this.members = result;
-      }, (err) => {
-        console.log(err);
-      });
-    }
+    if(!this.members) this.unitService.getUnitMembers().then(result => this.members = result, (err) => console.log(err));
   }
 }

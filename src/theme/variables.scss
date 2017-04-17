@@ -32,6 +32,10 @@ $calling-set-apart: #f0f;
 
 $colors: (
   primary:    #387ef5,
+  primaryText: (
+    base: #fff,
+    contrast: #387ef5
+  ),
   secondary:  #32db64,
   danger:     #f53d3d,
   light:      #f4f4f4,
@@ -39,7 +43,12 @@ $colors: (
   errorText: (
     base: #fff,
     contrast: #f53d3d
-  )
+  ),
+  energized:  #ffc527,
+  royal:      #7e60ff,
+  subtle:     #444444,
+  vibrant:    rebeccapurple,
+  bright:     #ffc125
 );
 
 .calling_done {

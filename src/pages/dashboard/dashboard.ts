@@ -4,7 +4,6 @@ import { NavController, ActionSheetController, ModalController, ItemSliding, Ale
 
 import { UploadService } from '../../providers/upload-service';
 import { OrgService, Org, Calling } from '../../providers/org-service';
-import { UnitInfo, MemberInfo } from '../../providers/unit-service';
 import { UserService } from '../../providers/user-service';
 import { CallingStatusService, CallingStatus } from '../../providers/calling-status-service';
 

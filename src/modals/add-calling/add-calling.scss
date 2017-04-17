@@ -1,0 +1,10 @@
+page-add-calling {
+  ion-card[sticky] {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    margin: 0;
+  }
+}

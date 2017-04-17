@@ -1,12 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ViewController, Platform, NavParams } from 'ionic-angular';
+import { ViewController, NavParams } from 'ionic-angular';
 import 'rxjs/add/operator/debounceTime';
 
 import { UnitService, MemberInfo } from '../../providers/unit-service';
 import { OrgService } from '../../providers/org-service';
 
 @Component({
+  selector: 'page-edit-calling',
   templateUrl: 'edit-calling.html'
 })
 export class EditCallingModal {

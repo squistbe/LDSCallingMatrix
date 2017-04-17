@@ -1,0 +1,17 @@
+page-edit-calling {
+  ion-card[sticky] {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 44px;
+    width: 100%;
+    z-index: 100;
+    margin: 0;
+  }
+  ion-searchbar[sticky] {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #bfbfbf;
+  }
+}
