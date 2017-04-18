@@ -56,9 +56,9 @@ export class OrgService {
     });
   }
 
-  reorderOrgs(params) {
+  reorderCallings(orgId, params) {
     return new Promise((resolve, reject) => {
-      this.authService.put(ORG_API + '/reorder', params).subscribe(res => resolve(res.json()), err => reject(err));
+      this.authService.put(ORG_API + `/${orgId}/callings/reorder`, params).subscribe(res => resolve(res.json()), err => reject(err));
     });
   }
 

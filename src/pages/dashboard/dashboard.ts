@@ -151,20 +151,12 @@ export class DashboardPage {
   }
 
   reorderItems(indexes, orgId, callings) {
-    let params = {
-      orgId: orgId,
-      from: indexes.from,
-      to: indexes.to
-    };
-
     this.showLoader('Reordering...');
     callings = reorderArray(callings, indexes);
-    this.orgService.reorderOrgs(params).then((result: Array<Org>) => {
+    this.orgService.reorderCallings(orgId, indexes).then((result: Array<Org>) => {
       this.orgs = result;
       this.loading.dismiss();
-    }, err => {
-      console.log(err);
-    });
+    }, err => console.log(err));
   }
 
   openFilter() {
