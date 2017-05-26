@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { LoadingController, NavController, NavParams, AlertController } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
+import { LoadingController } from 'ionic-angular/components/loading/loading-controller';
+import { AlertController } from 'ionic-angular/components/alert/alert-controller';
+import { Nav } from 'ionic-angular/components/nav/nav';
 
 import { AuthService } from '../../providers/auth-service';
 import { UserService } from '../../providers/user-service';
@@ -17,39 +18,19 @@ import { WelcomePage } from '../welcome/welcome';
 export class Login {
   private login: FormGroup;
   loading: any;
-  email: string;
-  password: string;
 
   constructor(
     public authService: AuthService,
     public userService: UserService,
     public loadingCtrl: LoadingController,
-    public navCtrl: NavController,
+    public navCtrl: Nav,
     public alertCtrl: AlertController,
-    public params: NavParams,
-    public storage: Storage,
     private formBuilder: FormBuilder
   ) {
     this.login = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required]
     });
-  }
-
-  ionViewDidLoad() {
-    this.showLoader('Loading...');
-
-    // No need to check authenticity
-    if(!this.params.get('forceLogout')) {
-      // Check if already authenticated
-      this.authService.checkAuthentication().then((res) => {
-        this.launchDashboard();
-      }, (err) => {
-        this.loading.dismiss();
-      });
-    } else {
-      this.loading.dismissAll();
-    }
   }
 
   doLogin() {

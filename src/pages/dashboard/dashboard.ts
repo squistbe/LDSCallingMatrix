@@ -288,12 +288,6 @@ export class DashboardPage {
   }
 
   removeCalling(org, calling) {
-    this.orgService.removeOrgCalling(org._id, calling._id).then(result => {
-      org.callings.splice(org.callings.indexOf(calling), 1);
-    }, err => console.log(err));
+    this.orgService.removeOrgCalling(org._id, calling._id).then(result => org.callings.splice(org.callings.indexOf(calling), 1), err => console.log(err));
   }
-}
-
-export class Test extends AlertController{
-
 }

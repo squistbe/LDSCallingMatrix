@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ViewController, NavParams } from 'ionic-angular';
 import 'rxjs/add/operator/debounceTime';
@@ -11,7 +11,6 @@ import { OrgService } from '../../providers/org-service';
   templateUrl: 'edit-calling.html'
 })
 export class EditCallingModal {
-  @ViewChild('memberSearch') memberSearch;
   searchTerm: string = '';
 	searchControl: FormControl;
 	items: any;
@@ -27,7 +26,6 @@ export class EditCallingModal {
   }
 
   ionViewDidLoad() {
-    this.memberSearch.setFocus();
     this.searchControl.valueChanges.debounceTime(1000).subscribe(search => {
       this.setFilteredItems();
     });

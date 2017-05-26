@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Platform } from 'ionic-angular/platform/platform';
 import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/map';
 
@@ -10,7 +11,11 @@ const AUTH_API = '/api/auth';
 export class AuthService {
   userInfo: UserInfo;
 
-  constructor(public http: Http, public userService: UserService) {}
+  constructor(public http: Http, public userService: UserService, public platform: Platform) {}
+
+  getRoot() {
+    return this.platform.is('cordova') ? 'https://lds-bishopric-tools.herokuapp.com' : '';
+  }
 
   createAuthorizationHeader(headers: Headers) {
     headers.append('Authorization', this.userService.currentUser.token);
@@ -30,14 +35,14 @@ export class AuthService {
       search: params
     });
 
-    return this.http.get(url, options);
+    return this.http.get(this.getRoot() + url, options);
   }
 
   put(url, data?) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     this.createAuthorizationHeader(headers);
-    return this.http.put(url, data, {
+    return this.http.put(this.getRoot() + url, data, {
       headers: headers
     });
   }
@@ -46,7 +51,7 @@ export class AuthService {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     this.createAuthorizationHeader(headers);
-    return this.http.post(url, data, {
+    return this.http.post(this.getRoot() + url, data, {
       headers: headers
     });
   }
@@ -55,7 +60,7 @@ export class AuthService {
     let headers = new Headers();
     this.createAuthorizationHeader(headers);
 
-    return this.http.delete(url, {
+    return this.http.delete(this.getRoot() + url, {
       headers: headers
     });
   }
@@ -68,8 +73,9 @@ export class AuthService {
           this.userInfo = value;
           let headers = new Headers();
           this.createAuthorizationHeader(headers);
-          this.http.get(AUTH_API + '/protected', {headers: headers}).subscribe(res => resolve(res.json()), err => reject(err));
+          this.http.get(this.getRoot() + AUTH_API + '/protected', {headers: headers}).subscribe(res => resolve(res.json()), err => reject(err));
         }
+        else reject({error: 'No user found'});
       });
     });
   }
@@ -79,7 +85,7 @@ export class AuthService {
       let headers = new Headers();
       headers.append('Content-Type', 'application/json');
 
-      this.http.post(AUTH_API + '/register', JSON.stringify(details), {headers: headers})
+      this.http.post(this.getRoot() + AUTH_API + '/register', JSON.stringify(details), {headers: headers})
         .subscribe(res => {
           let data = res.json();
           this.userService.setUserInfo(data);
@@ -95,7 +101,7 @@ export class AuthService {
       let headers = new Headers();
       headers.append('Content-Type', 'application/json');
 
-      this.http.post(AUTH_API + '/login', JSON.stringify(credentials), {headers: headers})
+      this.http.post(this.getRoot() + AUTH_API + '/login', JSON.stringify(credentials), {headers: headers})
         .subscribe(res => {
           let data = res.json();
           this.userService.setUserInfo(data);

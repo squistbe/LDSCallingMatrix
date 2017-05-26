@@ -30,7 +30,7 @@
             <h2>{{calling.name}} <span *ngIf="calling.className">- {{calling.className}}</span></h2>
             <p *ngIf="calling.member"><i>{{calling.member.name.first + ' ' + calling.member.name.last}}</i></p>
             <p *ngIf="!calling.member"><i>vacant</i></p>
-            <p *ngIf="calling.status" item-content class="calling_{{calling.status.id}}">{{calling.status.label}}</p>
+            <p *ngIf="calling.status" item-content class="calling_{{calling.status.id}}" [hidden]="reorderCallings">{{calling.status.label}}</p>
           </ion-item>
           <ion-item-options>
             <button ion-button color="light" icon-left (click)="moreClick(calling, org, slidingItem)">
