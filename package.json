@@ -9,7 +9,7 @@
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve",
     "e2e": "ionic-app-scripts build && protractor",
-    "postinstall": "ionic state restore && webdriver-manager update",
+    "postinstall": "ionic state restore",
     "start": "ionic serve",
     "test": "ng test",
     "test-coverage": "ng test --code-coverage",
