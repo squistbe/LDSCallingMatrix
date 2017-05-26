@@ -2,7 +2,7 @@
 // https://karma-runner.github.io/0.13/config/configuration-file.html
 
 module.exports = function (config) {
-  config.set({
+  var cfg = {
     basePath: '',
     frameworks: ['jasmine', '@angular/cli'],
     plugins: [
@@ -34,11 +34,27 @@ module.exports = function (config) {
     reporters: config.angularCli && config.angularCli.codeCoverage
               ? ['progress', 'coverage-istanbul']
               : ['progress', 'kjhtml'],
+
+    // start these browsers
+    // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
+    browsers: ['Chrome', 'ChromeCanary'],
+    customLaunchers: {
+        Chrome_travis_ci: {
+            base: 'Chrome',
+            flags: ['--no-sandbox']
+        }
+    },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: ['Chrome', 'ChromeCanary'],
     singleRun: false
-  });
+  };
+
+  if (process.env.TRAVIS) {
+    cfg.browsers = ['Chrome_travis_ci'];
+  }
+
+  config.set(cfg);
 };
